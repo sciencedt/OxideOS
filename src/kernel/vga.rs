@@ -46,3 +46,15 @@ pub fn set_cursor_pos(pos: u16) {
     out8(CRTC_INDEX, 0x0E);
     out8(CRTC_DATA, (pos >> 8) as u8);
 }
+
+pub fn disable_cursor() {
+    const CRTC_INDEX: u16 = 0x3D4;
+    const CRTC_DATA:  u16 = 0x3D5;
+
+    // Select Cursor Start register (0x0A)
+    super::io::out8(CRTC_INDEX, 0x0A);
+    let prev = super::io::in8(CRTC_DATA);
+    // Set bit 5 = 1 to disable cursor
+    super::io::out8(CRTC_DATA, prev | 0x20);
+}
+
